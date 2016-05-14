@@ -2,9 +2,11 @@ package com.sala4.uao.postget;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +33,7 @@ public class Login extends Activity {
         setContentView(R.layout.login);
 
         txtUsuario=(EditText) findViewById(R.id.txtUsuario);
-        txtPassword=(EditText) findViewById(R.id.txtUsuario);
+        txtPassword=(EditText) findViewById(R.id.txtPassword);
         btnEntrar=(Button) findViewById(R.id.btnEntrar);
 
     }
@@ -75,7 +77,21 @@ public class Login extends Activity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+            if (s.equals("LOGIN_BAD") ){
+                Toast.makeText(getApplicationContext(),"El usuario no está registrado",Toast.LENGTH_LONG).show();
+            }else{
+
+                SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+                pref.edit().putString("usuario", txtUsuario.getText().toString())
+                        .putString("password",txtPassword.getText().toString()).commit();
+
+                Intent i = new Intent(getApplicationContext(),Contenido.class);
+                startActivity(i);
+                finish();
+
+            }
 
         }
     }
