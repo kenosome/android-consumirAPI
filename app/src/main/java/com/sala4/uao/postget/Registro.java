@@ -1,6 +1,7 @@
 package com.sala4.uao.postget;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -44,19 +46,27 @@ public class Registro extends Activity{
     }
 
     public void btnRegistrarse_onClick(View view) {
+
         HttpThread hilo=new HttpThread();
-        hilo.execute();
+        hilo.execute(txtNombre.getText().toString(),
+                     txtUsuario.getText().toString(),
+                     txtPassword.getText().toString());
 
     }
 
-    public class HttpThread extends AsyncTask<Void,String,String>{
+    public class HttpThread extends AsyncTask<String,String,String>{
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected String doInBackground(String... params) {
 
             try {
+
+                Uri.Builder uribuilder= new Uri.Builder();
+                uribuilder.appendQueryParameter("nombre",params[0])
+                            .appendQueryParameter("usuario", params[1])
+                            .appendQueryParameter("password", params[2]);
                 //String response= WebUtilDomi.GETrequest("http://www.google.com.co");
-                String response= WebUtilDomi.POSTrequest("http://172.16.136.27:8080/WebService/webresources/service/crear_usuario", new Uri.Builder());
+                String response= WebUtilDomi.POSTrequest( "http://192.168.173.1:8080/WebService/webresources/service/crear_usuario" ,uribuilder);
                 return response;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -70,6 +80,14 @@ public class Registro extends Activity{
             super.onPostExecute(s);
 
             txtvwSalida.setText(s);
+
+            if(s.equals("SUCCESS")){
+                Intent i= new Intent(getApplicationContext(),Login.class);
+                startActivity(i);
+            }else{
+                Toast.makeText(getApplicationContext(),"El usuario ya existe", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 

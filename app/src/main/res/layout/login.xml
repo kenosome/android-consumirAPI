@@ -7,16 +7,19 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Escriba su usuario"/>
+        android:hint="Escriba su usuario"
+        android:id="@+id/txtUsuario"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Escriba su contraseña"/>
+        android:hint="Escriba su contraseña"
+        android:id="@+id/txtPassword"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Entrar"
-        android:id="@+id/btnEntrar"/>
+        android:id="@+id/btnEntrar"
+        android:onClick="btnEntrar_onClick"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
