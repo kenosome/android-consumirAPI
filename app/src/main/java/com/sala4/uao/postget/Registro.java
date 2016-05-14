@@ -1,6 +1,7 @@
 package com.sala4.uao.postget;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -54,7 +55,8 @@ public class Registro extends Activity{
         protected String doInBackground(Void... params) {
 
             try {
-                String response= WebUtilDomi.GETrequest("http://www.google.com.co");
+                //String response= WebUtilDomi.GETrequest("http://www.google.com.co");
+                String response= WebUtilDomi.POSTrequest("http://172.16.136.27:8080/WebService/webresources/service/crear_usuario", new Uri.Builder());
                 return response;
             } catch (IOException e) {
                 e.printStackTrace();
