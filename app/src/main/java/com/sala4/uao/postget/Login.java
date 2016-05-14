@@ -2,11 +2,17 @@ package com.sala4.uao.postget;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.io.IOException;
+
+import Util.WebUtilDomi;
 
 /**
  * Created by sala4 on 14/05/2016.
@@ -47,8 +53,30 @@ public class Login extends Activity {
         @Override
         protected String doInBackground(String... params) {
 
+            try {
+
+                Uri.Builder uribuilder= new Uri.Builder();
+                uribuilder.appendQueryParameter("usuario", params[0])
+                        .appendQueryParameter("password", params[1]);
+
+                String response= WebUtilDomi.POSTrequest("http://192.168.173.1:8080/WebService/webresources/service/getuser", uribuilder);
+
+                return response;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+
         }
     }
 
